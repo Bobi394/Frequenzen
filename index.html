@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Frequenz Eingabe</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Gib eine Frequenz in Hertz (Hz) ein:</h1>
+  <input type="number" id="frequencyInput" placeholder="z.B. 440" min="20" max="20000">
+  <button id="submitButton">Fertig</button>
+
+  <script>
+    document.getElementById('submitButton').addEventListener('click', function() {
+      const frequency = document.getElementById('frequencyInput').value;
+      if (frequency >= 20 && frequency <= 20000) {
+        // Speichern der Frequenz im LocalStorage
+        localStorage.setItem('frequency', frequency);
+        window.location.href = 'frequency.html'; // Weiterleitung zur nächsten Seite
+      } else {
+        alert("Bitte gib eine gültige Frequenz zwischen 20 und 20000 Hz ein.");
+      }
+    });
+  </script>
+</body>
+</html>
