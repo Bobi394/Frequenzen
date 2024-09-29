@@ -4,13 +4,59 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Frequenz Ton</title>
-  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+
+    button {
+      font-size: 1.2em;
+      padding: 10px;
+      margin: 10px;
+      cursor: pointer;
+    }
+
+    h1 {
+      color: #333;
+    }
+  </style>
 </head>
 <body>
   <h1>Frequenz: <span id="displayFrequency"></span> Hz</h1>
   <button id="startButton">Start</button>
   <button id="stopButton">Stopp</button>
 
-  <script src="script.js"></script>
+  <script>
+    let oscillator;
+    let audioContext;
+
+    window.onload = function() {
+      const frequency = localStorage.getItem('frequency');
+      document.getElementById('displayFrequency').textContent = frequency;
+
+      document.getElementById('startButton').addEventListener('click', function() {
+        // Erzeuge den AudioContext erst bei Klick
+        if (!audioContext) {
+          audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        }
+
+        // Erzeuge den Oszillator
+        oscillator = audioContext.createOscillator();
+        oscillator.type = 'sine'; // Sinuswelle
+        oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime); // Frequenz einstellen
+        oscillator.connect(audioContext.destination);
+        oscillator.start();
+      });
+
+      document.getElementById('stopButton').addEventListener('click', function() {
+        if (oscillator) {
+          oscillator.stop();
+          oscillator.disconnect();
+        }
+      });
+    };
+  </script>
 </body>
 </html>
